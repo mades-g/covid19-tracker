@@ -13,29 +13,47 @@ import StatisticsActive from '../assets/navigation/statistics_active.svg';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeScreen, NewsScreen, InformationScreen, StatisticsScreen } from '../screens';
 
-const itemBackGround = "#FFF";
-const activeItemBackGround = "#4C79FF";
+const itemBackgroundColor = "#FFF";
+const activeItemBackgroundColor = "#4C79FF";
 
 const Tab = createBottomTabNavigator();
 
 const styles = StyleSheet.create({
-    flex: {
-        flex: 1
+    backgroundColorWhite: {
+        backgroundColor: itemBackgroundColor
     },
-    navItemActive: {
-        backgroundColor: activeItemBackGround
+    bottomBarItem: {
+        borderRadius: 25,
+        height: 56,
+        paddingLeft: 22,
+        width: 70,
     },
-    navItem: {
-        backgroundColor: itemBackGround
+    bottomBarItemActive: {
+        backgroundColor: activeItemBackgroundColor
     },
+    bottomNavBar: {
+        flex: 0.085
+    },
+    contentCenter: {
+        justifyContent: 'center'
+    },
+    contentSpaceAround: {
+        justifyContent: 'space-around'
+    },
+    // flex: {
+    //     flex: 1
+    // },
     row: {
         flexDirection: 'row'
-    }
+    },
+    // column: {
+    //     flexDirection: 'column'
+    // },
 });
 
 function BottomNavBar({ state, descriptors, navigation }) {
     return(
-        <View style={styles.row}>
+        <View style={[ styles.bottomNavBar, styles.contentSpaceAround, styles.row ]}>
             {state.routes.map(
                 (route, index) => {
                     const { options } = descriptors[route.key];
@@ -54,11 +72,12 @@ function BottomNavBar({ state, descriptors, navigation }) {
 
                     return(
                         <TouchableOpacity
-                            key={`nav-${index}`}
-                            style={styles.flex}
+                            key={`tab-${index}`}
                             onPress={onPress}
                             accessibilityRole="button"
                             accessibilityLabel={options.tabBarAccessibilityLabel}
+                            activeOpacity={1}
+                            style={styles.contentCenter}
                         >
                             <BottomBarItem isActive={isFocused} icon={route.name}/>
                         </TouchableOpacity>
@@ -83,8 +102,8 @@ function BottomBarItem({ isActive, icon }) {
     };
 
     return(
-        <View style={isActive ? styles.navItemActive : styles.navItem}>
-            {isActive ? icons[`${icon}Active`] : icons[icon] }
+        <View style={[ styles.bottomBarItem, isActive ? styles.bottomBarItemActive : styles.backgroundColorWhite, styles.contentCenter ]}>
+            {isActive ? icons[`${icon}Active`] : icons[icon]}
         </View>
     );
 }
