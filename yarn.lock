@@ -5185,6 +5185,13 @@ react-native-screens@~2.2.0:
   dependencies:
     debounce "^1.2.0"
 
+react-native-svg-flagkit@^0.9.5:
+  version "0.9.5"
+  resolved "https://registry.yarnpkg.com/react-native-svg-flagkit/-/react-native-svg-flagkit-0.9.5.tgz#4d6e75af75aa7c3ff3b88e8cd61571bc93976714"
+  integrity sha512-tal7QlW4pUq17AcUFaBbS72lixoM96NAmGt9NkTBd5YsdNVGYrBPhFw1W9MiWGUsjSa+r4KrjKeEaseSEd/ZAA==
+  dependencies:
+    react-native-svg "^9.3.3"
+
 react-native-svg-transformer@^0.14.3:
   version "0.14.3"
   resolved "https://registry.yarnpkg.com/react-native-svg-transformer/-/react-native-svg-transformer-0.14.3.tgz#43c8e176f5a11f16f39b87a64018e0ac090ffbdb"
@@ -5195,7 +5202,7 @@ react-native-svg-transformer@^0.14.3:
     path-dirname "^1.0.2"
     semver "^5.6.0"
 
-react-native-svg@11.0.1:
+react-native-svg@11.0.1, react-native-svg@^9.3.3:
   version "11.0.1"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-11.0.1.tgz#e92e7e9f9cb2604333fd5014fd4edcf62fea6496"
   integrity sha512-XriIwSoe9eTtKyqxpNC6POSOqmXAB9mZQOm5tMoaimEqQOMfzgYrBoF9nY6VPGmaH5dRlWBqnnBf389APiZFcQ==
