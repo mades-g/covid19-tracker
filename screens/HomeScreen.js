@@ -4,29 +4,24 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import WareMask from '../assets/prevention/ware_mask.svg';
 import HandWash from '../assets/prevention/hand_wash.svg';
 import SafetyDistance from '../assets/prevention/safety_distance.svg';
-
-const colorMain = '#473F97';
-const colorBlack = '#000';
-const colorWhite = '#FFF';
-const colorOrange = '#E8821E'
-const activeItemBackgroundColor = "#4C79FF";
+import * as Colors from '../styles/Colors';
 
 const styles = StyleSheet.create({
     containerHeader: {
-        backgroundColor: colorMain,
+        backgroundColor: Colors.colorMain,
         borderBottomLeftRadius: 40,
         borderBottomRightRadius: 40,
         height: 100
     },
     containerHeaderDropdown: {
-        backgroundColor: colorOrange,
+        backgroundColor: Colors.colorOrange,
         borderRadius: 50,
         flexDirection: 'row',
         height: 40,
         width: 116,
     },
     containerHeaderTitle: {
-        color: colorWhite,
+        color: Colors.colorWhite,
         fontSize: 24,
         fontStyle: 'normal',
         fontWeight: '600',
@@ -46,9 +41,9 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     containerInformationHeaderSeeDetails: {
-        color: activeItemBackgroundColor,
+        color: Colors.activeItemBackgroundColor,
         marginHorizontal: 20,
-        marginVertical: 9,
+        marginVertical: 8,
     },
     containerInformationHeaderType: {
         fontSize: 24,
@@ -74,7 +69,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly'
     },
     shadow: {
-        shadowColor: colorBlack,
+        shadowColor: Colors.colorBlack,
         shadowOffset: {
             width: 0,
             height: 6
@@ -91,7 +86,7 @@ const styles = StyleSheet.create({
 
 export function HomeScreen() {
     return(
-        <View style={[ styles.flex, styles.column ]}>
+        <View style={[ styles.flex, styles.column, { backgroundColor: Colors.colorWhite }]}>
             <View style={[ styles.shadow, styles.containerHeader ]}>
                 <View style={styles.contentHeaderRow}>
                     <Text style={styles.containerHeaderTitle}>Covid-19</Text>
@@ -130,15 +125,15 @@ export function HomeScreen() {
                 </View>
                 <View style={styles.containerInformationContent}>
                     <View style={styles.preventionItem}>
-                        <Image style={[ styles.shadow, styles.marginBottom10 ]} source={require('../assets/headache.png')} />
+                        <Image style={[ styles.shadow, styles.marginBottom10 ]} source={require('../assets/symptoms/headache.png')} />
                         <Text style={styles.text}>Headache</Text>
                     </View>
                     <View style={styles.preventionItem}>
-                        <Image style={[ styles.shadow, styles.marginBottom10 ]} source={require('../assets/caugh.png')} />
+                        <Image style={[ styles.shadow, styles.marginBottom10 ]} source={require('../assets/symptoms/caugh.png')} />
                         <Text style={styles.text}>Cough</Text>
                     </View>
                     <View style={styles.preventionItem}>
-                        <Image style={[ styles.shadow, styles.marginBottom10 ]} source={require('../assets/fever.png')} />
+                        <Image style={[ styles.shadow, styles.marginBottom10 ]} source={require('../assets/symptoms/fever.png')} />
                         <Text style={styles.text}>Fever</Text>
                     </View>
                 </View>

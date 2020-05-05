@@ -40,15 +40,9 @@ const styles = StyleSheet.create({
     contentSpaceAround: {
         justifyContent: 'space-around'
     },
-    // flex: {
-    //     flex: 1
-    // },
     row: {
         flexDirection: 'row'
     },
-    // column: {
-    //     flexDirection: 'column'
-    // },
 });
 
 function BottomNavBar({ state, descriptors, navigation }) {
