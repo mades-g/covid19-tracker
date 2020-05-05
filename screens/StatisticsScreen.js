@@ -51,8 +51,16 @@ const styles = StyleSheet.create({
     },
     largeTotalContainer: {
         borderRadius: 8,
+        flexDirection: 'column',
         height: 100,
+        justifyContent: 'space-evenly',
         width: 155,
+    },
+    largeTotalContainerCases: {
+        color: Colors.colorWhite,
+        fontSize: 24,
+        fontWeight: '600',
+        marginHorizontal: 10
     },
     localeContainer: {
         backgroundColor: colorWhiteWithOpacity,
@@ -83,12 +91,27 @@ const styles = StyleSheet.create({
     },
     smallTotalContainer: {
         borderRadius: 8,
+        flexDirection: 'column',
         height: 100,
+        justifyContent: 'space-evenly',
         width: 98
+    },
+    smallTotalContainerCases: {
+        color: Colors.colorWhite,
+        fontSize: 20,
+        fontWeight: '600',
+        marginHorizontal: 10,
     },
     totalContainer: {
         flexDirection: 'row',
         justifyContent: 'space-evenly'
+    },
+    totalContainerHeader: {
+        color: Colors.colorWhite,
+        fontSize: 14,
+        fontWeight: '500',
+        marginHorizontal: 10,
+        marginVertical: 10
     },
     totalContainerPaddingAndMargin: {
         marginHorizontal: 10,
@@ -145,23 +168,45 @@ function CasesCounter() {
     return(
         <View style={styles.flex}>
             <View style={styles.totalTextContainer}>
+                {/* statefull */}
                 <Text style={styles.totalTextRow}>Total</Text>
                 <Text style={styles.totalTextRow}>Today</Text>
                 <Text style={styles.totalTextRow}>Yesterday</Text>
             </View>
             <View style={styles.totalContainer}>
                 {/* affected and death */}
-                <View style={[ styles.largeTotalContainer, styles.colorAffected ]}></View>
-                <View style={[ styles.largeTotalContainer, styles.colorDeath ]}></View>
+                <View style={[ styles.largeTotalContainer, styles.colorAffected ]}>
+                    <Text style={styles.totalContainerHeader}>Affect</Text>
+                    <Text style={styles.largeTotalContainerCases}>336,851</Text>
+                </View>
+                <View style={[ styles.largeTotalContainer, styles.colorDeath ]}>
+                    <Text style={styles.totalContainerHeader}>Death</Text>
+                    <Text style={styles.largeTotalContainerCases}>9,620</Text>
+                </View>
             </View>
             <View style={[ styles.totalContainer, styles.totalContainerPaddingAndMargin ]}>
                 {/* recovered active serious */}
-                <View style={[ styles.smallTotalContainer, styles.colorRecovered ]}></View>
-                <View style={[ styles.smallTotalContainer, styles.colorActive ]}></View>
-                <View style={[ styles.smallTotalContainer, styles.colorSerious ]}></View>
+                <View style={[ styles.smallTotalContainer, styles.colorRecovered ]}>
+                    <Text style={styles.totalContainerHeader}>Recovered</Text>
+                    <Text style={[ styles.smallTotalContainerCases, { lineHeight: 26} ]}>17,977</Text>
+                </View>
+                <View style={[ styles.smallTotalContainer, styles.colorActive ]}>
+                    <Text style={styles.totalContainerHeader}>Active</Text>
+                    <Text style={[ styles.smallTotalContainerCases, { lineHeight: 26} ]}>301,251</Text>
+                </View>
+                <View style={[ styles.smallTotalContainer, styles.colorSerious ]}>
+                    <Text style={styles.totalContainerHeader}>Active</Text>
+                    <Text style={[ styles.smallTotalContainerCases, { lineHeight: 26} ]}>8,702</Text>
+                </View>
             </View>
         </View>
     );
+}
+
+function CasesGraph() {
+    return(
+        <View style={{ backgroundColor: Colors.colorWhite, flex: 0.6, borderTopRightRadius: 40, borderTopLeftRadius: 40 }}></View>
+    )
 }
 
 export function StatisticsScreen() {
@@ -170,6 +215,7 @@ export function StatisticsScreen() {
             <Text style={styles.containerTitle}>Statistics</Text>
             <LocaleSlider />
             <CasesCounter />
+            <CasesGraph />
         </View>
     );
 }
