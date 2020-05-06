@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from '../assets/navigation/home.svg';
 import HomeActive from '../assets/navigation/home_active.svg';
@@ -10,7 +11,6 @@ import InformationActive from '../assets/navigation/information_active.svg';
 import Statistics from '../assets/navigation/statistics.svg';
 import StatisticsActive from '../assets/navigation/statistics_active.svg';
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeScreen, NewsScreen, InformationScreen, StatisticsScreen } from '../screens';
 
 const itemBackgroundColor = "#FFF";

@@ -1,12 +1,16 @@
 import React from 'react';
-
 import { NavigationContainer } from '@react-navigation/native';
+import { Provider } from 'react-redux';
+
+import store from './store';
 import { BottomTabNavigator } from './navigation/BottomTabNavigator';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <BottomTabNavigator />
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <BottomTabNavigator />
+      </NavigationContainer>
+    </Provider>
   );
 }

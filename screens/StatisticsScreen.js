@@ -188,15 +188,15 @@ function CasesCounter() {
                 {/* recovered active serious */}
                 <View style={[ styles.smallTotalContainer, styles.colorRecovered ]}>
                     <Text style={styles.totalContainerHeader}>Recovered</Text>
-                    <Text style={[ styles.smallTotalContainerCases, { lineHeight: 26} ]}>17,977</Text>
+                    <Text style={[ styles.smallTotalContainerCases, { lineHeight: 26 }]}>17,977</Text>
                 </View>
                 <View style={[ styles.smallTotalContainer, styles.colorActive ]}>
                     <Text style={styles.totalContainerHeader}>Active</Text>
-                    <Text style={[ styles.smallTotalContainerCases, { lineHeight: 26} ]}>301,251</Text>
+                    <Text style={[ styles.smallTotalContainerCases, { lineHeight: 26 }]}>301,251</Text>
                 </View>
                 <View style={[ styles.smallTotalContainer, styles.colorSerious ]}>
                     <Text style={styles.totalContainerHeader}>Active</Text>
-                    <Text style={[ styles.smallTotalContainerCases, { lineHeight: 26} ]}>8,702</Text>
+                    <Text style={[ styles.smallTotalContainerCases, { lineHeight: 26 }]}>8,702</Text>
                 </View>
             </View>
         </View>
