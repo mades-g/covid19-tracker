@@ -11,7 +11,8 @@ import InformationActive from '../assets/navigation/information_active.svg';
 import Statistics from '../assets/navigation/statistics.svg';
 import StatisticsActive from '../assets/navigation/statistics_active.svg';
 
-import { HomeScreen, NewsScreen, InformationScreen, StatisticsScreen } from '../screens';
+import { HomeScreen, NewsScreen, InformationScreen } from '../screens';
+import StatisticsScreen from '../screens/StatisticsScreen';
 
 const itemBackgroundColor = "#FFF";
 const activeItemBackgroundColor = "#4C79FF";

@@ -1,6 +1,10 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { Text, View, StyleSheet, Animated, TouchableWithoutFeedback } from 'react-native';
+import { connect } from 'react-redux';
+
 import * as Colors from '../styles/Colors';
+import { Loading } from '../components/Loading';
+import { fetchCountryStats, fetchGlobalStats } from '../actions/statisticsActions';
 
 const colorAffected = {
     backgroundColor:  '#FFB259'
@@ -24,6 +28,12 @@ const colorWhiteWithOpacity = 'rgba(255, 255, 255, 0.2)';
 const colorWhiteWithOutOpacity = 'rgba(255, 255, 255, 1)';
 
 const styles = StyleSheet.create({
+    casesGraph: {
+        backgroundColor: Colors.colorWhite,
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
+        flex: 0.6
+    },
     colorActive,
     colorAffected,
     colorDeath,
@@ -100,7 +110,8 @@ const styles = StyleSheet.create({
         color: Colors.colorWhite,
         fontSize: 20,
         fontWeight: '600',
-        marginHorizontal: 10,
+        lineHeight: 26,
+        marginHorizontal: 10
     },
     totalContainer: {
         flexDirection: 'row',
@@ -130,14 +141,13 @@ const styles = StyleSheet.create({
     }
 });
 
-function LocaleSlider() {
-    const [ toggled, setToggle ] = useState(0);
-
-    const sliderAnim  = useRef(new Animated.Value(0)).current;
+function LocaleSlider(props) {
+    const { fetchCountryStats, fetchGlobalStats, statistics: { isCountryStat }} = props;
+    const sliderAnim = useRef(new Animated.Value(0)).current;
 
     useEffect(
         () => {
-            if (toggled) {
+            if (!isCountryStat) {
                 return Animated.timing(sliderAnim, {
                     toValue: 157,
                 }).start()
@@ -147,15 +157,15 @@ function LocaleSlider() {
                 toValue: 0,
             }).start()
         }
-        , [ toggled, sliderAnim ])
+        , [ isCountryStat, sliderAnim ]);
 
     return(
         <View style={styles.localeContainer}>
             <View style={styles.localeContainerRow}>
-                <TouchableWithoutFeedback onPress={() => setToggle(!toggled)}>
+                <TouchableWithoutFeedback onPress={() => fetchCountryStats()}>
                     <Text style={styles.localeText}>My Country</Text>
                 </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => setToggle(!toggled)}>
+                <TouchableWithoutFeedback onPress={() => fetchGlobalStats()}>
                     <Text style={styles.localeText}>Global</Text>
                 </TouchableWithoutFeedback>
                 <Animated.View style={[ styles.localeSliderBtn, { left: sliderAnim }]} />
@@ -164,39 +174,51 @@ function LocaleSlider() {
     );
 }
 
-function CasesCounter() {
+function CasesCounter(props) {
+    const { isCountryStat, countryStats, globalStats } = props.statistics;
+
+    const stats = isCountryStat ? countryStats : globalStats;
+
     return(
         <View style={styles.flex}>
             <View style={styles.totalTextContainer}>
                 {/* statefull */}
                 <Text style={styles.totalTextRow}>Total</Text>
-                <Text style={styles.totalTextRow}>Today</Text>
-                <Text style={styles.totalTextRow}>Yesterday</Text>
             </View>
             <View style={styles.totalContainer}>
                 {/* affected and death */}
                 <View style={[ styles.largeTotalContainer, styles.colorAffected ]}>
-                    <Text style={styles.totalContainerHeader}>Affect</Text>
-                    <Text style={styles.largeTotalContainerCases}>336,851</Text>
+                    <Text style={styles.totalContainerHeader}>Affected</Text>
+                    <Text style={styles.largeTotalContainerCases}>
+                        {stats.total_cases}
+                    </Text>
                 </View>
                 <View style={[ styles.largeTotalContainer, styles.colorDeath ]}>
                     <Text style={styles.totalContainerHeader}>Death</Text>
-                    <Text style={styles.largeTotalContainerCases}>9,620</Text>
+                    <Text style={styles.largeTotalContainerCases}>
+                        {stats.total_death}
+                    </Text>
                 </View>
             </View>
             <View style={[ styles.totalContainer, styles.totalContainerPaddingAndMargin ]}>
                 {/* recovered active serious */}
                 <View style={[ styles.smallTotalContainer, styles.colorRecovered ]}>
                     <Text style={styles.totalContainerHeader}>Recovered</Text>
-                    <Text style={[ styles.smallTotalContainerCases, { lineHeight: 26 }]}>17,977</Text>
+                    <Text style={styles.smallTotalContainerCases}>
+                        {stats.total_recovered}
+                    </Text>
                 </View>
                 <View style={[ styles.smallTotalContainer, styles.colorActive ]}>
                     <Text style={styles.totalContainerHeader}>Active</Text>
-                    <Text style={[ styles.smallTotalContainerCases, { lineHeight: 26 }]}>301,251</Text>
+                    <Text style={styles.smallTotalContainerCases}>
+                        {stats.total_active_cases}
+                    </Text>
                 </View>
                 <View style={[ styles.smallTotalContainer, styles.colorSerious ]}>
-                    <Text style={styles.totalContainerHeader}>Active</Text>
-                    <Text style={[ styles.smallTotalContainerCases, { lineHeight: 26 }]}>8,702</Text>
+                    <Text style={styles.totalContainerHeader}>Serious</Text>
+                    <Text style={styles.smallTotalContainerCases}>
+                        {stats.total_serious_cases}
+                    </Text>
                 </View>
             </View>
         </View>
@@ -204,18 +226,39 @@ function CasesCounter() {
 }
 
 function CasesGraph() {
-    return(
-        <View style={{ backgroundColor: Colors.colorWhite, flex: 0.6, borderTopRightRadius: 40, borderTopLeftRadius: 40 }}></View>
+    return (
+        <View style={styles.casesGraph}></View>
     )
 }
 
-export function StatisticsScreen() {
+function StatisticsScreen(props) {
+    const { fetchCountryStats, fetchGlobalStats, statistics: { isFetching, isCountryStat }} =  props;
+
+    useEffect(
+        () => {
+            isCountryStat ? fetchCountryStats() : fetchGlobalStats()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, []
+    )
+
     return (
         <View style={styles.container}>
             <Text style={styles.containerTitle}>Statistics</Text>
-            <LocaleSlider />
-            <CasesCounter />
-            <CasesGraph />
+            {isFetching ? <Loading /> :
+                <>
+                    <LocaleSlider {...props} />
+                    <CasesCounter {...props} />
+                    <CasesGraph />
+                </>
+            }
         </View>
     );
 }
+
+const mapStateToProps = state => {
+    return {
+        statistics: state.statistics
+    };
+};
+
+export default connect(mapStateToProps, { fetchCountryStats, fetchGlobalStats })(StatisticsScreen);
