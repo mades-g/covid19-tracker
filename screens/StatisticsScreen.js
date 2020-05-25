@@ -1,10 +1,10 @@
-import React, { useRef, useEffect } from 'react'
-import { Text, View, StyleSheet, Animated, TouchableWithoutFeedback } from 'react-native';
+import React, { useEffect, useCallback } from 'react'
+import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 import * as Colors from '../styles/Colors';
-import { Loading } from '../components/Loading';
-import { fetchCountryStats, fetchGlobalStats } from '../actions/statisticsActions';
+import { CasesBox } from '../components/CasesBox';
+import { fetchStats } from '../actions/statisticsActions';
 
 const colorAffected = {
     backgroundColor:  '#FFB259'
@@ -34,11 +34,6 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 40,
         flex: 0.6
     },
-    colorActive,
-    colorAffected,
-    colorDeath,
-    colorRecovered,
-    colorSerious,
     container: {
         backgroundColor: Colors.colorMain,
         flex: 1
@@ -141,85 +136,26 @@ const styles = StyleSheet.create({
     }
 });
 
-function LocaleSlider(props) {
-    const { fetchCountryStats, fetchGlobalStats, statistics: { isCountryStat }} = props;
-    const sliderAnim = useRef(new Animated.Value(0)).current;
-
-    useEffect(
-        () => {
-            if (!isCountryStat) {
-                return Animated.timing(sliderAnim, {
-                    toValue: 157,
-                }).start()
-            }
-
-            return Animated.timing(sliderAnim, {
-                toValue: 0,
-            }).start()
-        }
-        , [ isCountryStat, sliderAnim ]);
-
-    return(
-        <View style={styles.localeContainer}>
-            <View style={styles.localeContainerRow}>
-                <TouchableWithoutFeedback onPress={() => fetchCountryStats()}>
-                    <Text style={styles.localeText}>My Country</Text>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => fetchGlobalStats()}>
-                    <Text style={styles.localeText}>Global</Text>
-                </TouchableWithoutFeedback>
-                <Animated.View style={[ styles.localeSliderBtn, { left: sliderAnim }]} />
-            </View>
-        </View>
-    );
-}
-
-function CasesCounter(props) {
-    const { isCountryStat, countryStats, globalStats } = props.statistics;
-
-    const stats = isCountryStat ? countryStats : globalStats;
-
+function CasesCounter({ cases }) {
     return(
         <View style={styles.flex}>
             <View style={styles.totalTextContainer}>
-                {/* statefull */}
+                {/* stateful */}
                 <Text style={styles.totalTextRow}>Total</Text>
             </View>
             <View style={styles.totalContainer}>
                 {/* affected and death */}
-                <View style={[ styles.largeTotalContainer, styles.colorAffected ]}>
-                    <Text style={styles.totalContainerHeader}>Affected</Text>
-                    <Text style={styles.largeTotalContainerCases}>
-                        {stats.total_cases}
-                    </Text>
-                </View>
-                <View style={[ styles.largeTotalContainer, styles.colorDeath ]}>
-                    <Text style={styles.totalContainerHeader}>Death</Text>
-                    <Text style={styles.largeTotalContainerCases}>
-                        {stats.total_death}
-                    </Text>
-                </View>
+                <CasesBox isLarge={true} boxColor={colorAffected} headerText={'Affected'} total={cases.total} />
+                <CasesBox isLarge={true} boxColor={colorDeath} headerText={'Death'} total={cases.deaths} />
             </View>
             <View style={[ styles.totalContainer, styles.totalContainerPaddingAndMargin ]}>
                 {/* recovered active serious */}
-                <View style={[ styles.smallTotalContainer, styles.colorRecovered ]}>
-                    <Text style={styles.totalContainerHeader}>Recovered</Text>
-                    <Text style={styles.smallTotalContainerCases}>
-                        {stats.total_recovered}
-                    </Text>
-                </View>
-                <View style={[ styles.smallTotalContainer, styles.colorActive ]}>
-                    <Text style={styles.totalContainerHeader}>Active</Text>
-                    <Text style={styles.smallTotalContainerCases}>
-                        {stats.total_active_cases}
-                    </Text>
-                </View>
-                <View style={[ styles.smallTotalContainer, styles.colorSerious ]}>
-                    <Text style={styles.totalContainerHeader}>Serious</Text>
-                    <Text style={styles.smallTotalContainerCases}>
-                        {stats.total_serious_cases}
-                    </Text>
-                </View>
+                <CasesBox isLarge={false} boxColor={colorRecovered} headerText={'Recovered'} total={cases.recovered} />
+                <CasesBox isLarge={false} boxColor={colorActive} headerText={'Active'} total={cases.active} />
+                <CasesBox isLarge={false} boxColor={colorSerious} headerText={'Serious'} total={cases.serious} />
+            </View>
+            <View style={styles.source}>
+                <Text style={styles.sourceText}>{cases.source}</Text>
             </View>
         </View>
     );

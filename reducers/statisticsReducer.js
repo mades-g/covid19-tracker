@@ -5,10 +5,9 @@ import {
     FETCHING_CASES_REQUEST
 } from '../actions/types';
 
-const initialState = {
+export const initialState = {
     isFetching: false,
-    countryStats: {},
-    globalStats: {},
+    stats: {},
     errorMessage: '',
     isCountryStat: true
 };
@@ -18,9 +17,9 @@ export default function(state = initialState, action) {
         case FETCHING_CASES_REQUEST:
             return { ...state, isFetching: true }
         case FETCHING_COUNTRY_CASES_SUCCESS:
-            return { ...state, isFetching: false, countryStats: action.payload, isCountryStat: true }
+            return { ...state, isFetching: false, stats: { cases: action.payload.cases }, isCountryStat: true }
         case FETCHING_GLOBAL_CASES_SUCCESS:
-            return { ...state, isFetching: false, globalStats: action.payload, isCountryStat: false }
+            return { ...state, isFetching: false, stats: { cases: action.payload.cases }, isCountryStat: false }
         case FETCHING_CASES_FAILURE:
             return { ...state, isFetching: false, errorMessage: action.payload }
         default:
