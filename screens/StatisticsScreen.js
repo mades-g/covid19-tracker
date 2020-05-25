@@ -1,10 +1,12 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect } from 'react'
 import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 import * as Colors from '../styles/Colors';
 import { CasesBox } from '../components/CasesBox';
 import { fetchStats } from '../actions/statisticsActions';
+import { toggleSwitch } from '../actions/uiActions';
+import { LocaleSwitch } from '../components/LocaleSwitch';
 
 const colorAffected = {
     backgroundColor:  '#FFB259'
@@ -23,9 +25,6 @@ const colorActive = {
 const colorSerious = {
     backgroundColor: '#9059FF'
 };
-
-const colorWhiteWithOpacity = 'rgba(255, 255, 255, 0.2)';
-const colorWhiteWithOutOpacity = 'rgba(255, 255, 255, 1)';
 
 const styles = StyleSheet.create({
     casesGraph: {
@@ -54,74 +53,22 @@ const styles = StyleSheet.create({
     flex: {
         flex: 1
     },
-    largeTotalContainer: {
-        borderRadius: 8,
-        flexDirection: 'column',
-        height: 100,
-        justifyContent: 'space-evenly',
-        width: 155,
+    source: {
+        flex: 1,
+        textAlign: 'center'
     },
-    largeTotalContainerCases: {
+    sourceText: {
         color: Colors.colorWhite,
-        fontSize: 24,
-        fontWeight: '600',
-        marginHorizontal: 10
-    },
-    localeContainer: {
-        backgroundColor: colorWhiteWithOpacity,
-        borderRadius: 50,
-        height: 47,
-        justifyContent: 'center',
-        marginHorizontal: 40,
-        marginTop: 50,
-        paddingHorizontal: 5,
-        width: 327
-    },
-    localeContainerRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-around'
-    },
-    localeSliderBtn: {
-        backgroundColor: colorWhiteWithOutOpacity,
-        borderRadius: 50,
-        height: 40,
-        position: 'absolute',
-        top: -12,
-        width: 160
-    },
-    localeText: {
-        fontSize: 14,
-        fontWeight: '500',
-        zIndex: 3
-    },
-    smallTotalContainer: {
-        borderRadius: 8,
-        flexDirection: 'column',
-        height: 100,
-        justifyContent: 'space-evenly',
-        width: 98
-    },
-    smallTotalContainerCases: {
-        color: Colors.colorWhite,
-        fontSize: 20,
-        fontWeight: '600',
-        lineHeight: 26,
-        marginHorizontal: 10
+        fontSize: 12,
+        textAlign: 'center'
     },
     totalContainer: {
         flexDirection: 'row',
         justifyContent: 'space-evenly'
     },
-    totalContainerHeader: {
-        color: Colors.colorWhite,
-        fontSize: 14,
-        fontWeight: '500',
-        marginHorizontal: 10,
-        marginVertical: 10
-    },
     totalContainerPaddingAndMargin: {
         marginHorizontal: 10,
-        marginVertical: 15,
+        marginVertical: 12,
     },
     totalTextContainer: {
         flexDirection: 'row',
@@ -168,33 +115,27 @@ function CasesGraph() {
 }
 
 function StatisticsScreen(props) {
-    const { fetchCountryStats, fetchGlobalStats, statistics: { isFetching, isCountryStat }} =  props;
+    const { fetchStats, toggleSwitch, ui: { isToggled }, statistics: { stats: { cases = {}}}} =  props;
 
-    useEffect(
-        () => {
-            isCountryStat ? fetchCountryStats() : fetchGlobalStats()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, []
-    )
+    useEffect(() => {
+        fetchStats(isToggled);
+    }, [ isToggled, fetchStats ]);
 
     return (
         <View style={styles.container}>
             <Text style={styles.containerTitle}>Statistics</Text>
-            {isFetching ? <Loading /> :
-                <>
-                    <LocaleSlider {...props} />
-                    <CasesCounter {...props} />
-                    <CasesGraph />
-                </>
-            }
+            <LocaleSwitch onClick={toggleSwitch} value={isToggled} />
+            <CasesCounter cases={cases} />
+            <CasesGraph />
         </View>
     );
 }
 
 const mapStateToProps = state => {
     return {
-        statistics: state.statistics
+        statistics: state.statistics,
+        ui: state.ui
     };
 };
 
-export default connect(mapStateToProps, { fetchCountryStats, fetchGlobalStats })(StatisticsScreen);
+export default connect(mapStateToProps, { fetchStats, toggleSwitch })(StatisticsScreen);

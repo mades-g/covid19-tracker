@@ -22,6 +22,16 @@ export const fetchingStatsFailure = error => ({
     payload: error
 });
 
+export const fetchStats = (isToggled) => async dispatch => {
+    let fetchAction = fetchGlobalStats;
+
+    if (isToggled) {
+        fetchAction = fetchCountryStats;
+    }
+
+    dispatch(fetchAction());
+};
+
 let requestOptions = {
     method: 'GET',
     redirect: 'follow'

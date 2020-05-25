@@ -8,8 +8,7 @@ import {
 export const initialState = {
     isFetching: false,
     stats: {},
-    errorMessage: '',
-    isCountryStat: true
+    errorMessage: ''
 };
 
 export default function(state = initialState, action) {
@@ -17,9 +16,9 @@ export default function(state = initialState, action) {
         case FETCHING_CASES_REQUEST:
             return { ...state, isFetching: true }
         case FETCHING_COUNTRY_CASES_SUCCESS:
-            return { ...state, isFetching: false, stats: { cases: action.payload.cases }, isCountryStat: true }
+            return { ...state, isFetching: false, stats: { cases: action.payload.cases }}
         case FETCHING_GLOBAL_CASES_SUCCESS:
-            return { ...state, isFetching: false, stats: { cases: action.payload.cases }, isCountryStat: false }
+            return { ...state, isFetching: false, stats: { cases: action.payload.cases  }}
         case FETCHING_CASES_FAILURE:
             return { ...state, isFetching: false, errorMessage: action.payload }
         default:
