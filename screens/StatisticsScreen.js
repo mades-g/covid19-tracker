@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 
 import * as Colors from '../styles/Colors';
 import { CasesBox } from '../components/CasesBox';
-import { fetchStats } from '../actions/statisticsActions';
+import { fetchStats, fetchCountryTimeline } from '../actions/statisticsActions';
 import { toggleSwitch } from '../actions/uiActions';
 import { LocaleSwitch } from '../components/LocaleSwitch';
+import { CasesGraph } from '../components/CasesGraph';
 
 const colorAffected = {
     backgroundColor:  '#FFB259'
@@ -27,12 +28,6 @@ const colorSerious = {
 };
 
 const styles = StyleSheet.create({
-    casesGraph: {
-        backgroundColor: Colors.colorWhite,
-        borderTopLeftRadius: 40,
-        borderTopRightRadius: 40,
-        flex: 0.6
-    },
     container: {
         backgroundColor: Colors.colorMain,
         flex: 1
@@ -108,25 +103,20 @@ function CasesCounter({ cases }) {
     );
 }
 
-function CasesGraph() {
-    return (
-        <View style={styles.casesGraph}></View>
-    )
-}
-
 function StatisticsScreen(props) {
-    const { fetchStats, toggleSwitch, ui: { isToggled }, statistics: { stats: { cases = {}}}} =  props;
+    const { fetchStats, toggleSwitch, fetchCountryTimeline, ui: { isToggled }, statistics: { timeline, stats, isFetching }} =  props;
 
     useEffect(() => {
+        fetchCountryTimeline();
         fetchStats(isToggled);
-    }, [ isToggled, fetchStats ]);
+    }, [ isToggled, fetchStats, fetchCountryTimeline ]);
 
     return (
         <View style={styles.container}>
             <Text style={styles.containerTitle}>Statistics</Text>
             <LocaleSwitch onClick={toggleSwitch} value={isToggled} />
-            <CasesCounter cases={cases} />
-            <CasesGraph />
+            <CasesCounter cases={stats} loading={isFetching} />
+            <CasesGraph data={timeline} loading={isFetching} />
         </View>
     );
 }
@@ -138,4 +128,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps, { fetchStats, toggleSwitch })(StatisticsScreen);
+export default connect(mapStateToProps, { fetchStats, toggleSwitch, fetchCountryTimeline })(StatisticsScreen);
