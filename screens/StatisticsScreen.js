@@ -7,8 +7,8 @@ import { CasesBox } from '../components/CasesBox';
 import { fetchStats, fetchCountryTimeline } from '../actions/statisticsActions';
 import { toggleSwitch } from '../actions/uiActions';
 import { LocaleSwitch } from '../components/LocaleSwitch';
-import { CasesGraph } from '../components/CasesGraph';
 
+import { CasesGraph } from '../components/CasesGraph';
 const colorAffected = {
     backgroundColor:  '#FFB259'
 };

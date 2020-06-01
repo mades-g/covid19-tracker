@@ -8,7 +8,6 @@ import {
     FETCHING_TIMELINE_REQUEST,
     FETCHING_TIMELINE_FAILURE
 } from './types';
-import { formatDate } from '../utils/date';
 
 export const fetchingGlobalStatsSuccess = json => ({
     type: FETCHING_GLOBAL_CASES_SUCCESS,
@@ -101,23 +100,42 @@ export const fetchCountryStats = () => {
             let response = await fetch('https://api.thevirustracker.com/free-api?countryTimeline=AT', requestOptions)
             let json = await response.json();
 
-            dispatch(fetchingCountryStatsSuccess(normalizeCasesStatsPayload(json.countrydata[0])));
+            dispatch(fetchingCountryStatsSuccess({}));
         } catch (error) {
             dispatch(fetchingStatsFailure(error));
         }
     };
 };
 
-export const normalizeTimelineStatsPayload = (timeLineStats) => {
-    return Object.keys(timeLineStats).map(
+export const normalizeGraphPayload = (payload, fieldName ='newDailyCases') => {
+    let collection = []
+    const graphData = [];
+
+    payload.forEach((load, index) => {
+        collection.push({
+            value: load[fieldName],
+            date: load.date
+        });
+
+        if (((index + 1) % 7) === 0 || (index === payload.length - 1)) {
+            graphData.push(collection);
+            collection = [];
+        }
+    });
+
+    return graphData;
+};
+
+export const normalizeTimelineStatsPayload = (payload) => {
+    return Object.keys(payload).map(
         (timelineDateId) => {
             return {
                 date: timelineDateId,
-                newDailyCases: timeLineStats[timelineDateId].new_daily_cases,
-                newDailyDeaths: timeLineStats[timelineDateId].new_daily_deaths,
-                totalCases: timeLineStats[timelineDateId].total_cases,
-                totalRecoveries: timeLineStats[timelineDateId].total_recoveries,
-                totalDeaths: timeLineStats[timelineDateId].total_deaths
+                newDailyCases: payload[timelineDateId].new_daily_cases,
+                newDailyDeaths: payload[timelineDateId].new_daily_deaths,
+                totalCases: payload[timelineDateId].total_cases,
+                totalRecoveries: payload[timelineDateId].total_recoveries,
+                totalDeaths: payload[timelineDateId].total_deaths
 
             }
         }
@@ -148,11 +166,11 @@ export const fetchCountryTimeline = () => {
 
             delete json.timelineitems[0].stat;
 
-            const result = normalizeTimelineStatsPayload(json.timelineitems[0]).slice(0, 2);
+            const results = normalizeTimelineStatsPayload(json.timelineitems[0]);
 
-            dispatch(fetchingCountryTimelineSuccess(result));
+            dispatch(fetchingCountryTimelineSuccess(normalizeGraphPayload(results)));
         } catch (error) {
-            console.log(error)
+
             dispatch(fetchingTimelineFailure(error));
         }
     };

@@ -1,12 +1,19 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList, Dimensions } from "react-native";
-import { Grid, LineChart, XAxis, YAxis } from 'react-native-svg-charts'
+import * as scale from 'd3-scale'
+import { View, Text, StyleSheet, FlatList } from "react-native";
+import { Grid, BarChart, XAxis, YAxis } from 'react-native-svg-charts'
 
+import { formatDate } from '../utils/date';
 import * as Colors from '../styles/Colors';
 
-const screeWidth = Dimensions.get('window').width;
+const xAxisHeight = 30;
+const axesSvg = { fontSize: 10, fill: 'grey' };
+const verticalContentInset = { top: 10, bottom: 10 };
 
 const styles = StyleSheet.create({
+    XAxis: {
+        height: xAxisHeight
+    },
     container: {
         backgroundColor: Colors.colorWhite,
         borderTopLeftRadius: 40,
@@ -15,79 +22,85 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         paddingHorizontal: 20
     },
+    defaultFlex1: {
+        flex: 1
+    },
+    graphContainer: {
+        flexDirection: 'row',
+        height: 200,
+        marginTop: 23,
+        padding: 20
+    },
+    graphContainerWithXAxisContainer: {
+        marginHorizontal: 10,
+        width: 299
+    },
     headerText: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginTop: 8,
-        textAlign:'center'
+        left: '35%',
+        marginTop: 15,
+        position: 'absolute'
     }
 });
 
-// const data = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
-
-// const axesSvg = { fontSize: 10, fill: 'grey' };
-// const verticalContentInset = { top: 10, bottom: 10 }
-// const xAxisHeight = 30;
-
-const mockData = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
-
-const axesSvg = { fontSize: 10, fill: 'grey' };
-const verticalContentInset = { top: 10, bottom: 10 }
-const xAxisHeight = 30
-
 const renderGraph = ({ item }) => {
-
-    return(
-        <View style={{ flex: 1, marginHorizontal: 10, width: 299 }}>
-            <LineChart
-                style={{ flex: 1 }}
-                data={mockData}
+    return (
+        <View style={styles.graphContainer}>
+            <YAxis
+                data={item}
+                style={{ marginBottom: xAxisHeight }}
                 contentInset={verticalContentInset}
-                svg={{ stroke: 'rgb(134, 65, 244)' }}
-            >
-                <Grid />
-            </LineChart>
-            <XAxis
-                style={{ marginHorizontal: -10, height: xAxisHeight }}
-                data={mockData}
-                formatLabel={(value, index) => index}
-                contentInset={{ left: 10, right: 10 }}
                 svg={axesSvg}
+                yAccessor={({ item }) => item.value}
             />
+            <View style={[ styles.defaultFlex1, styles.graphContainerWithXAxisContainer ]}>
+                <BarChart
+                    style={styles.defaultFlex1}
+                    data={item}
+                    contentInset={verticalContentInset}
+                    svg={{ fill: 'rgb(134, 65, 244)' }}
+                    gridMin={0}
+                    yAccessor={({ item }) => item.value}
+                    xAccessor={({ item }) => item.date}
+                    xScale={scale.scaleBand}
+                >
+                    <Grid />
+                </BarChart>
+                <XAxis
+                    style={styles.XAxis}
+                    data={item}
+                    svg={axesSvg}
+                    scale={scale.scaleBand}
+                    formatLabel={(_, index) => formatDate(item[index].date)}
+                />
+            </View>
         </View>
     )
 };
 
-const Foo = ({ data }) => {
+const Graph = ({ data }) => {
     return(
         <View style={styles.container}>
             <Text style={styles.headerText}>Daily New Cases</Text>
-            <View style={{ height: 200, padding: 20, flexDirection: 'row' }}>
-                <YAxis
-                    data={mockData}
-                    style={{ marginBottom: xAxisHeight }}
-                    contentInset={verticalContentInset}
-                    svg={axesSvg}
-                />
-                <FlatList
-                    horizontal
-                    pagingEnabled
-                    scrollEnabled
-                    showsHorizontalScrollIndicator={false}
-                    scrollEventThrottle={16}
-                    snapToAlignment="center"
-                    data={data}
-                    keyExtractor={(item, index) => `${index}`}
-                    renderItem={renderGraph}
-                />
-            </View>
+            <FlatList
+                horizontal
+                pagingEnabled
+                scrollEnabled
+                showsHorizontalScrollIndicator={false}
+                scrollEventThrottle={16}
+                snapToAlignment="center"
+                data={data}
+                keyExtractor={(item, index) => `${index}`}
+                renderItem={renderGraph}
+            />
         </View>
     )
 }
 export const CasesGraph = (props) => {
     return(
         <>
-            {!props.loading && <Foo {...props}/>}
+            {!props.loading && <Graph {...props}/>}
         </>
     )
 }
