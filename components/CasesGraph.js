@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         marginTop: 23,
         paddingHorizontal: 10,
-        width: Dimensions.get('screen').width - (8 * 2),
+        width: Dimensions.get('screen').width - (10 * 2),
     },
     graphContainerWithXAxisContainer: {
         marginHorizontal: 10,
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         left: '35%',
-        marginTop: 10,
+        marginTop: 1,
         position: 'absolute'
     }
 });

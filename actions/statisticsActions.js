@@ -111,7 +111,7 @@ export const normalizeGraphPayload = (payload, fieldName ='newDailyCases') => {
     let collection = []
     const graphData = [];
 
-    payload.forEach((load, index) => {
+    payload.reverse().forEach((load, index) => {
         collection.push({
             value: load[fieldName],
             date: load.date
@@ -168,7 +168,7 @@ export const fetchCountryTimeline = () => {
 
             const results = normalizeTimelineStatsPayload(json.timelineitems[0]);
 
-            dispatch(fetchingCountryTimelineSuccess(normalizeGraphPayload(results).reverse()));
+            dispatch(fetchingCountryTimelineSuccess(normalizeGraphPayload(results)));
         } catch (error) {
 
             dispatch(fetchingTimelineFailure(error));
