@@ -8,7 +8,7 @@ import { fetchStats, fetchCountryTimeline } from '../actions/statisticsActions';
 import { toggleSwitch } from '../actions/uiActions';
 import { LocaleSwitch } from '../components/LocaleSwitch';
 
-import { CasesGraph } from '../components/CasesGraph';
+import CasesGraph from '../components/CasesGraph';
 const colorAffected = {
     backgroundColor:  '#FFB259'
 };
@@ -116,7 +116,7 @@ function StatisticsScreen(props) {
             <Text style={styles.containerTitle}>Statistics</Text>
             <LocaleSwitch onClick={toggleSwitch} value={isToggled} />
             <CasesCounter cases={stats} loading={isFetching} />
-            <CasesGraph data={timeline} loading={isFetching} />
+            <CasesGraph cases={timeline} />
         </View>
     );
 }

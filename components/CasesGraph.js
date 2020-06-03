@@ -100,10 +100,9 @@ const Graph = ({ data }) => {
         </View>
     )
 }
-export const CasesGraph = (props) => {
-    return(
-        <>
-            {!props.loading && <Graph {...props}/>}
-        </>
-    )
+
+export default class CasesGraph extends React.PureComponent {
+    render() {
+        return <Graph data={this.props.cases} />
+    }
 }
