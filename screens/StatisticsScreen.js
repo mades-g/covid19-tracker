@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         marginHorizontal: 50,
-        marginVertical: 30
+        marginVertical: 12
     },
     totalTextRow: {
         color: Colors.colorWhite,

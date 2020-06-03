@@ -1,12 +1,12 @@
 import React from 'react';
 import * as scale from 'd3-scale'
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList, Dimensions } from "react-native";
 import { Grid, BarChart, XAxis, YAxis } from 'react-native-svg-charts'
 
 import { formatDate } from '../utils/date';
 import * as Colors from '../styles/Colors';
 
-const xAxisHeight = 30;
+const xAxisHeight = 20;
 const axesSvg = { fontSize: 10, fill: 'grey' };
 const verticalContentInset = { top: 10, bottom: 10 };
 
@@ -19,27 +19,29 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         flex: 0.6,
-        flexDirection: 'column',
-        paddingHorizontal: 20
+        flexDirection: 'column'
     },
     defaultFlex1: {
         flex: 1
     },
     graphContainer: {
         flexDirection: 'row',
-        height: 200,
+        height: null,
+        marginHorizontal: 10,
         marginTop: 23,
-        padding: 20
+        paddingHorizontal: 10,
+        width: Dimensions.get('screen').width - (8 * 2),
     },
     graphContainerWithXAxisContainer: {
         marginHorizontal: 10,
+        paddingRight: 10,
         width: 299
     },
     headerText: {
         fontSize: 20,
         fontWeight: 'bold',
         left: '35%',
-        marginTop: 15,
+        marginTop: 10,
         position: 'absolute'
     }
 });
@@ -52,6 +54,7 @@ const renderGraph = ({ item }) => {
                 style={{ marginBottom: xAxisHeight }}
                 contentInset={verticalContentInset}
                 svg={axesSvg}
+                formatLabel={(value) => Number.isInteger(value) ?  value : ''}
                 yAccessor={({ item }) => item.value}
             />
             <View style={[ styles.defaultFlex1, styles.graphContainerWithXAxisContainer ]}>
