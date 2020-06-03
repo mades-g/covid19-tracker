@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         height: 47,
         justifyContent: 'center',
-        marginHorizontal: 40,
+        left:0,
+        marginHorizontal: '5%',
         marginTop: 50,
         paddingHorizontal: 5,
         width: 327
