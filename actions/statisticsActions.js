@@ -83,7 +83,7 @@ export const fetchGlobalStats = () => {
     return async dispatch => {
         dispatch(fetchingStatsRequest());
         try {
-            let response = await fetch('https://api.thevirustracker.com/free-api?countryTimeline=AT', requestOptions);
+            let response = await fetch('https://api.thevirustracker.com/free-api?global=stats', requestOptions);
             let json = await response.json();
 
             dispatch(fetchingGlobalStatsSuccess(normalizeCasesStatsPayload(json.results[0])));
@@ -97,10 +97,10 @@ export const fetchCountryStats = () => {
     return async dispatch => {
         dispatch(fetchingStatsRequest());
         try {
-            let response = await fetch('https://api.thevirustracker.com/free-api?countryTimeline=AT', requestOptions)
+            let response = await fetch('https://api.thevirustracker.com/free-api?countryTotal=PT', requestOptions)
             let json = await response.json();
 
-            dispatch(fetchingCountryStatsSuccess({}));
+            dispatch(fetchingCountryStatsSuccess(normalizeCasesStatsPayload(json.countrydata[0])));
         } catch (error) {
             dispatch(fetchingStatsFailure(error));
         }
@@ -136,7 +136,6 @@ export const normalizeTimelineStatsPayload = (payload) => {
                 totalCases: payload[timelineDateId].total_cases,
                 totalRecoveries: payload[timelineDateId].total_recoveries,
                 totalDeaths: payload[timelineDateId].total_deaths
-
             }
         }
     );
@@ -160,7 +159,7 @@ export const fetchCountryTimeline = () => {
     return async dispatch => {
         dispatch(fetchingTimelineRequest());
         try {
-            let response = await fetch('https://api.thevirustracker.com/free-api?countryTimeline=AT', requestOptions);
+            let response = await fetch('https://api.thevirustracker.com/free-api?countryTimeline=PT', requestOptions);
 
             let json = await response.json();
 

@@ -7,19 +7,13 @@ import {
     FETCHING_TIMELINE_FAILURE,
     FETCHING_COUNTRY_TIMELINE_SUCCESS,
     FETCHING_GLOBAL_TIMELINE_SUCCESS,
-    UPDATE_GRAPH,
-    SCROLL_GRAPH
 } from '../actions/types';
 
 export const initialState = {
     isFetching: false,
     stats: {},
     timeline: [],
-    errorMessage: '',
-    graphData: {
-        xAxis: [],
-        yAxis: []
-    }
+    errorMessage: ''
 };
 
 export default function(state = initialState, action) {
@@ -40,10 +34,6 @@ export default function(state = initialState, action) {
             return { ...state, isFetching: false, timeline: action.payload }
         case FETCHING_GLOBAL_TIMELINE_SUCCESS:
             return { ...state, isFetching: false, timeline: action.payload }
-        case UPDATE_GRAPH:
-            return { ...state, graphData: action.payload }
-        case SCROLL_GRAPH:
-            return { ...state, graphData: { xAxis: action.payload }}
         default:
             return state;
     }

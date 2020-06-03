@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     headerText: {
         fontSize: 20,
         fontWeight: 'bold',
-        left: '35%',
+        left: '30%',
         marginTop: 1,
         position: 'absolute'
     }
