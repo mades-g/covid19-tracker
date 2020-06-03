@@ -168,7 +168,7 @@ export const fetchCountryTimeline = () => {
 
             const results = normalizeTimelineStatsPayload(json.timelineitems[0]);
 
-            dispatch(fetchingCountryTimelineSuccess(normalizeGraphPayload(results)));
+            dispatch(fetchingCountryTimelineSuccess(normalizeGraphPayload(results).reverse()));
         } catch (error) {
 
             dispatch(fetchingTimelineFailure(error));
