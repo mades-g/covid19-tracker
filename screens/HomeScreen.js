@@ -107,8 +107,7 @@ export function HomeScreen() {
                     </View>
                     <View style={styles.preventionItem}>
                         <HandWash style={[ styles.shadow, styles.marginBottom10 ]} />
-                        <Text style={styles.text}>Clean your hands</Text>
-                        <Text style={styles.text}>often</Text>
+                        <Text style={styles.text}>Clean your hands often</Text>
                     </View>
                     <View style={styles.preventionItem}>
                         <WareMask style={[ styles.shadow, styles.marginBottom10 ]} />
@@ -129,7 +128,7 @@ export function HomeScreen() {
                         <Text style={styles.text}>Headache</Text>
                     </View>
                     <View style={styles.preventionItem}>
-                        <Image style={[ styles.shadow, styles.marginBottom10 ]} source={require('../assets/symptoms/caugh.png')} />
+                        <Image style={[ styles.shadow, styles.marginBottom10 ]} source={require('../assets/symptoms/cough.png')} />
                         <Text style={styles.text}>Cough</Text>
                     </View>
                     <View style={styles.preventionItem}>
