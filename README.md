@@ -1,4 +1,4 @@
-# Covid 19 Tracker
+# Covid 19 Tracker [WIP]
 
  Expo React Native Covid 19 tracker, "optimizade" for Iphone 8 :see_no_evil:.
 
