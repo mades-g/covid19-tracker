@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     },
     bottomBarItem: {
         borderRadius: 25,
-        height: 56,
+        height: 53,
         paddingLeft: 22,
         width: 70,
     },
